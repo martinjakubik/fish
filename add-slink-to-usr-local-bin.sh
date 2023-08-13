@@ -1,0 +1,2 @@
+# adds symbolic link from /usr/local/bin/octave to octave 6.2.0 on macos
+ln -s /Applications/Octave-6.2.0.app/Contents/Resources/usr/Cellar/octave-octave-app@6.2.0/6.2.0/bin/octave-cli /usr/local/bin/octave
