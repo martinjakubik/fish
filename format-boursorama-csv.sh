@@ -21,7 +21,7 @@ do
 done
 
 if [[ ! -e  $outfile ]] ; then
-  outfilebasedir=$(basedir $outfile)
+  outfilebasedir=$(basename $outfile)
   mkdir -p $outfilebasedir
 fi
 
