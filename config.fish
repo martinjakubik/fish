@@ -25,3 +25,10 @@ end
 function decrypt
   gpg -d $argv[1]
 end
+
+set MAGICK_HOME /usr/local/lib/ImageMagick-7.0.10
+set DYLD_LIBRARY_PATH $MAGICK_HOME/lib
+
+fish_add_path --path /Users/I051433/.npm-global/bin
+fish_add_path --path /Applications/Inkscape.app/Contents/MacOS/
+fish_add_path --path $MAGICK_HOME/bin
