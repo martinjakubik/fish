@@ -73,7 +73,7 @@ extract_creation_date_from_meta_data_file() {
 
 export -f extract_creation_date_from_meta_data_file
 
-update_image_file_modified_date_with_extracted_meta_data() {
+update_photo_file_modified_date_with_extracted_meta_data() {
     file_name="$1"
     meta_data_file=$(get_meta_data_file "$file_name")
     echo meta data file: "${meta_data_file}.supplemental-metadata.json"
@@ -86,7 +86,7 @@ update_image_file_modified_date_with_extracted_meta_data() {
     echo
 }
 
-export -f update_image_file_modified_date_with_extracted_meta_data
+export -f update_photo_file_modified_date_with_extracted_meta_data
 
 update_movie_file_modified_date_with_extracted_meta_data() {
     file_name="$1"
@@ -97,7 +97,7 @@ update_movie_file_modified_date_with_extracted_meta_data() {
 
 export -f update_movie_file_modified_date_with_extracted_meta_data
 
-find "$inputDir" -type f -iname '*.jpg' -ok sh -c 'update_image_file_modified_date_with_extracted_meta_data "{}"' \;
-find "$inputDir" -type f -iname '*.png' -ok sh -c 'update_image_file_modified_date_with_extracted_meta_data "{}"' \;
+find "$inputDir" -type f -iname '*.jpg' -ok sh -c 'update_photo_file_modified_date_with_extracted_meta_data "{}"' \;
+find "$inputDir" -type f -iname '*.png' -ok sh -c 'update_photo_file_modified_date_with_extracted_meta_data "{}"' \;
 find "$inputDir" -type f -iname '*.mp4' -ok sh -c 'update_movie_file_modified_date_with_extracted_meta_data "{}"' \;
 find "$inputDir" -type f -iname '*.mov' -ok sh -c 'update_movie_file_modified_date_with_extracted_meta_data "{}"' \;
