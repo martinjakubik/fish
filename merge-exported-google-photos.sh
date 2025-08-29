@@ -1,4 +1,38 @@
 #!/bin/bash
+# moves photo files exported from google takeout
+#
+# from a file directory like:
+# Takeout/Google Photos/Photos from 1950/IMG_3324.JPG
+# Takeout 2/Google Photos/Photos from 1950/IMG_5120.PNG
+# Takeout 2/Google Photos/Photos from 1950/IMG_3324.JPG.supplemental-metadata.json
+# Takeout 2/Google Photos/Photos from 1960/Scan10015.JPG
+# Takeout 3/Google Photos/Photos from 1960/Scan10015.JPG.supplemental-metadata.json
+# Takeout 3/Google Photos/Photos from 1939/Scan10017.JPG.supplemental-metadata.json
+# Takeout 3/Google Photos/Photos from 1939/Scan10017.JPG
+# Takeout 4/Google Photos/Photos from 2017/17d2964e-e46e-4f0c-8c7a-5e1c2487419f.mp4
+# Takeout 4/Google Photos/Photos from 2017/17d2964e-e46e-4f0c-8c7a-5e1c2487419f.mp4.suppl.json
+# Takeout 5/Google Photos/Photos from 2017/20170414_141957_HDR.jpg
+# Takeout 5/Google Photos/Photos from 2017/20170414_141957_HDR.jpg.supplemental-metadata.json
+# Takeout 5/Google Photos/photos for profile/dscf0056.jpg.supplemental-metadata.json
+# Takeout 5/Google Photos/photos for profile/IMG_4239.JPG.supplemental-metadata.json
+# Takeout 5/Google Photos/photos for profile/IMG_4239.JPG
+#
+# to one like:
+# Photos from 1950/IMG_3324.JPG
+# Photos from 1950/IMG_5120.PNG
+# Photos from 1950/IMG_3324.JPG.supplemental-metadata.json
+# Photos from 1960/Scan10015.JPG
+# Photos from 1960/Scan10015.JPG.supplemental-metadata.json
+# Photos from 1939/Scan10017.JPG.supplemental-metadata.json
+# Photos from 1939/Scan10017.JPG
+# Photos from 2017/17d2964e-e46e-4f0c-8c7a-5e1c2487419f.mp4
+# Photos from 2017/17d2964e-e46e-4f0c-8c7a-5e1c2487419f.mp4.suppl.json
+# Photos from 2017/20170414_141957_HDR.jpg
+# Photos from 2017/20170414_141957_HDR.jpg.supplemental-metadata.json
+# photos for profile/dscf0056.jpg.supplemental-metadata.json
+# photos for profile/IMG_4239.JPG.supplemental-metadata.json
+# photos for profile/IMG_4239.JPG
+# 
 # sets up usage
 USAGE="usage: $0 -i --inputDir inputDir -o --destinationDir destinationDir --listDirectories yes|no --copyFiles yes|no -d --debug"
 
