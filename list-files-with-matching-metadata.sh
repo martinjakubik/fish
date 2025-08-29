@@ -62,16 +62,15 @@ get_photo_meta_data_file() {
 export -f get_photo_meta_data_file
 
 get_movie_meta_data_file() {
-    movie_or_photo_file="$1"
-    file_without_extension="${movie_or_photo_file%.*}"
-    echo "$file_without_extension"
+    movie_file="$1"
+    file_without_extension="${movie_file%.*}"
+    echo "$file_without_extension".suppl.json
 }
 
-export -f get_photo_meta_data_file
+export -f get_movie_meta_data_file
 
 extract_creation_date_from_meta_data_file() {
     meta_data_file="$1"
-    echo >&2 jq "${meta_data_file}"
     creation_date=$(jq .photoTakenTime.timestamp "${meta_data_file}")
     if [ -z $creation_date ] ; then
         return 1
@@ -84,7 +83,6 @@ export -f extract_creation_date_from_meta_data_file
 update_photo_file_modified_date_with_extracted_meta_data() {
     file_name="$1"
     meta_data_file=$(get_photo_meta_data_file "$file_name")
-    echo meta data file: "${meta_data_file}"
     extracted_creation_date=$(extract_creation_date_from_meta_data_file "$meta_data_file")
     if [ $extracted_creation_date ] ; then
         echo apply_extracted_date_to_photo_or_movie_file "$file_name" $extracted_creation_date
@@ -100,7 +98,7 @@ export -f update_photo_file_modified_date_with_extracted_meta_data
 update_movie_file_modified_date_with_extracted_meta_data() {
     file_name="$1"
     meta_data_file=$(get_photo_meta_data_file "$file_name")
-    echo meta data file: "${meta_data_file}.suppl.json"
+    echo meta data file: "${meta_data_file}"
     echo
 }
 
