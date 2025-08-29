@@ -80,12 +80,21 @@ extract_creation_date_from_meta_data_file() {
 
 export -f extract_creation_date_from_meta_data_file
 
+apply_extracted_date_to_photo_or_movie_file() {
+    file_name="$1"
+    creation_date="$2"
+    photo_create_date=$(exiftool -CreateDate "$file_name")
+    echo >&2 $photo_create_date
+}
+
+export -f apply_extracted_date_to_photo_or_movie_file
+
 update_photo_file_modified_date_with_extracted_meta_data() {
     file_name="$1"
     meta_data_file=$(get_photo_meta_data_file "$file_name")
     extracted_creation_date=$(extract_creation_date_from_meta_data_file "$meta_data_file")
     if [ $extracted_creation_date ] ; then
-        echo apply_extracted_date_to_photo_or_movie_file "$file_name" $extracted_creation_date
+        apply_extracted_date_to_photo_or_movie_file "$file_name" $extracted_creation_date
     else
         echo
         return 1
