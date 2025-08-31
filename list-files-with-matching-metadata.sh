@@ -91,7 +91,6 @@ export -f convert_epoch_date_to_exif_date
 convert_exif_date_to_epoch_date() {
     exif_date="$1"
     epoch_date=$(date -j -f "%Y:%m:%d %H:%M:%S" "$exif_date" +%s)
-    echo >&2 epoch $epoch_date
     echo $epoch_date
 }
 
@@ -117,14 +116,14 @@ export -f months_between_dates
 apply_extracted_date_to_photo_or_movie_file() {
     file_name="$1"
     file_create_date_as_epoch="$2"
-    echo >&2 file create date $file_create_date_as_epoch
     file_create_date_as_exif=$(convert_epoch_date_to_exif_date "$file_create_date_as_epoch")
     photo_create_date_as_exif_tuple=$(exiftool -CreateDate "$file_name")
     photo_create_date_as_exif=${photo_create_date_as_exif_tuple#Create Date*: }
     photo_create_date_as_epoch=$(convert_exif_date_to_epoch_date "$photo_create_date_as_exif")
     months_between=$(months_between_dates "$file_create_date_as_epoch" $photo_create_date_as_epoch)
-    echo >&2 months between $months_between
+    echo >&2 file create date $file_create_date_as_exif
     echo >&2 photo create date $photo_create_date_as_exif
+    echo >&2 months between $months_between
 }
 
 export -f apply_extracted_date_to_photo_or_movie_file
@@ -133,7 +132,6 @@ update_photo_file_modified_date_with_extracted_meta_data() {
     file_name="$1"
     meta_data_file=$(get_photo_meta_data_file "$file_name")
     extracted_creation_date=$(extract_creation_date_from_meta_data_file "$meta_data_file")
-    echo >&2 extracted file create date $extracted_creation_date
     if [ $extracted_creation_date ] ; then
         apply_extracted_date_to_photo_or_movie_file "$file_name" $extracted_creation_date
     else
