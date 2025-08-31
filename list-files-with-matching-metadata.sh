@@ -121,12 +121,12 @@ apply_extracted_date_to_photo_or_movie_file() {
     file_create_date_as_epoch="$2"
     command_file="$3"
     file_create_date_as_exif=$(convert_epoch_date_to_exif_date "$file_create_date_as_epoch")
-    photo_create_date_as_exif_tuple=$(exiftool -CreateDate "$file_name")
-    photo_create_date_as_exif=${photo_create_date_as_exif_tuple#Create Date*: }
+    photo_create_date_as_exif_tuple=$(jhead "$file_name" | grep Date/Time)
+    photo_create_date_as_exif=${photo_create_date_as_exif_tuple#Date/Time*: }
     photo_create_date_as_epoch=$(convert_exif_date_to_epoch_date "$photo_create_date_as_exif")
     months_between=$(months_between_dates "$file_create_date_as_epoch" $photo_create_date_as_epoch)
     if [[ $months_between > 12 ]] ; then
-        echo applying file creation date to photo "$file_name" >> "$HOME/gphotoexifupdater.sh"
+        echo exiftool "$file_name" >> "$HOME/gphotoexifupdater.sh"
     fi
 }
 
