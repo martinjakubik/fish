@@ -125,10 +125,6 @@ apply_extracted_date_to_photo_or_movie_file() {
     photo_create_date_as_exif=${photo_create_date_as_exif_tuple#Create Date*: }
     photo_create_date_as_epoch=$(convert_exif_date_to_epoch_date "$photo_create_date_as_exif")
     months_between=$(months_between_dates "$file_create_date_as_epoch" $photo_create_date_as_epoch)
-    echo >&2 file create date $file_create_date_as_exif
-    echo >&2 photo create date $photo_create_date_as_exif
-    echo >&2 months between $months_between
-    echo >&2 command file $command_file
     if [[ $months_between > 12 ]] ; then
         echo applying file creation date to photo "$file_name" >> "$HOME/gphotoexifupdater.sh"
     fi
@@ -144,10 +140,8 @@ update_jpeg_file_modified_date_with_extracted_meta_data() {
     if [ $extracted_creation_date ] ; then
         apply_extracted_date_to_photo_or_movie_file "$file_name" $extracted_creation_date "$command_file"
     else
-        echo
         return 1
     fi
-    echo
 }
 
 export -f update_jpeg_file_modified_date_with_extracted_meta_data
