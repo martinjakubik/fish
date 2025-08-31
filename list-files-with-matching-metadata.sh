@@ -75,16 +75,56 @@ extract_creation_date_from_meta_data_file() {
     if [ -z $creation_date ] ; then
         return 1
     fi
-    echo "$creation_date"
+    echo ${creation_date//\"/}
 }
 
 export -f extract_creation_date_from_meta_data_file
 
+convert_epoch_date_to_exif_date() {
+    epoch_date="$1"
+    exif_date=$(date -r "$epoch_date" "+%Y:%m:%d %H:%M:%S")
+    echo $exif_date
+}
+
+export -f convert_epoch_date_to_exif_date
+
+convert_exif_date_to_epoch_date() {
+    exif_date="$1"
+    epoch_date=$(date -j -f "%Y:%m:%d %H:%M:%S" "$exif_date" +%s)
+    echo >&2 epoch $epoch_date
+    echo $epoch_date
+}
+
+export -f convert_exif_date_to_epoch_date
+
+abs() {
+    value="$1"
+    absolute_value=${value%-}
+    echo $absolute_value
+}
+
+export -f abs
+
+months_between_dates() {
+    date1=$(abs "$1")
+    date2=$(abs "$2")
+    months_between_dates="$(( ($date2-$date1)/2592000 ))"
+    echo $months_between_dates
+}
+
+export -f months_between_dates
+
 apply_extracted_date_to_photo_or_movie_file() {
     file_name="$1"
-    creation_date="$2"
-    photo_create_date=$(exiftool -CreateDate "$file_name")
-    echo >&2 $photo_create_date
+    file_create_date_as_epoch="$2"
+    echo >&2 file create date $file_create_date_as_epoch
+    file_create_date_as_exif=$(convert_epoch_date_to_exif_date "$file_create_date_as_epoch")
+    photo_create_date_as_exif_tuple=$(exiftool -CreateDate "$file_name")
+    photo_create_date_as_exif=${photo_create_date_as_exif_tuple#Create Date*: }
+    photo_create_date_as_epoch=$(convert_exif_date_to_epoch_date "$photo_create_date_as_exif")
+    months_between=$(months_between_dates "$file_create_date_as_epoch" $photo_create_date_as_epoch)
+    echo >&2 months between $months_between
+    echo >&2 photo create date $photo_create_date_as_exif
 }
 
 export -f apply_extracted_date_to_photo_or_movie_file
@@ -93,6 +133,7 @@ update_photo_file_modified_date_with_extracted_meta_data() {
     file_name="$1"
     meta_data_file=$(get_photo_meta_data_file "$file_name")
     extracted_creation_date=$(extract_creation_date_from_meta_data_file "$meta_data_file")
+    echo >&2 extracted file create date $extracted_creation_date
     if [ $extracted_creation_date ] ; then
         apply_extracted_date_to_photo_or_movie_file "$file_name" $extracted_creation_date
     else
