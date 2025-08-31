@@ -7,6 +7,16 @@ if ! command -v jq >/dev/null 2>&1 ; then
     exit 1
 fi
 
+if ! command -v jhead >/dev/null 2>&1 ; then
+    echo "jhead could not be found"
+    exit 1
+fi
+
+if ! command -v exiftool >/dev/null 2>&1 ; then
+    echo "exiftool could not be found"
+    exit 1
+fi
+
 # set up defaults
 DEBUG=0
 inputDir=$HOME/inputDir
