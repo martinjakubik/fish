@@ -83,6 +83,7 @@ get_photo_meta_data_file() {
         excess_length=$(( total_length-MAX_LENGTH ))
         shortened_suffix=${suffix_for_json_files:excess_length}
         echo >&2 excess length $excess_length
+        echo >&2 shortened suffix: \"$shortened_suffix\"
     fi
     echo "$photo_file".$shortened_suffix
 
