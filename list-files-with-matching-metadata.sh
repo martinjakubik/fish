@@ -68,8 +68,26 @@ is_file_a_movie_or_photo() {
 export -f is_file_a_movie_or_photo
 
 get_photo_meta_data_file() {
+    MAX_LENGTH=52
     photo_file="$1"
-    echo "$photo_file".supplemental-metadata.json
+    photo_file_base_name=$(basename "$photo_file")
+    length_of_file_name=${#photo_file_base_name}
+    suffix_for_json_files=supplemental-metadata.json
+    shortened_suffix=$suffix_for_json_files
+    length_of_suffix=${#shortened_suffix}
+    total_length=$(( length_of_file_name+length_of_suffix ))
+    echo >&2 length of file name $length_of_file_name
+    echo >&2 length of suffix $length_of_suffix
+    echo >&2 total length $total_length max length $MAX_LENGTH
+    if [[ $total_length -gt $MAX_LENGTH ]] ; then
+        excess_length=$(( total_length-MAX_LENGTH ))
+        shortened_suffix=${suffix_for_json_files:excess_length}
+        echo >&2 excess length $excess_length
+    fi
+    echo "$photo_file".$shortened_suffix
+
+    # note: here is a regular expression to find long file names
+    # ^[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/.{48}\.jpg
 }
 
 export -f get_photo_meta_data_file
@@ -128,13 +146,13 @@ export -f months_between_dates
 
 apply_extracted_date_to_photo_or_movie_file() {
     file_name="$1"
-    file_create_date_as_epoch="$2"
+    json_metadata_create_date_as_epoch="$2"
     command_file="$3"
-    file_create_date_as_exif=$(convert_epoch_date_to_exif_date "$file_create_date_as_epoch")
+    file_create_date_as_exif=$(convert_epoch_date_to_exif_date "$json_metadata_create_date_as_epoch")
     photo_create_date_as_exif_tuple=$(jhead "$file_name" | grep Date/Time)
     photo_create_date_as_exif=${photo_create_date_as_exif_tuple#Date/Time*: }
     photo_create_date_as_epoch=$(convert_exif_date_to_epoch_date "$photo_create_date_as_exif")
-    months_between=$(months_between_dates "$file_create_date_as_epoch" $photo_create_date_as_epoch)
+    months_between=$(months_between_dates "$json_metadata_create_date_as_epoch" $photo_create_date_as_epoch)
     if [[ $months_between > 12 ]] ; then
         echo jhead -ts\"$file_create_date_as_exif\" \"$file_name\" >> "$HOME/gphotoexifupdater.sh"
     fi
@@ -156,6 +174,20 @@ update_jpeg_file_modified_date_with_extracted_meta_data() {
 
 export -f update_jpeg_file_modified_date_with_extracted_meta_data
 
+update_webp_file_modified_date_with_extracted_meta_data() {
+    file_name="$1"
+    command_file="$2"
+    meta_data_file=$(get_photo_meta_data_file "$file_name")
+    extracted_creation_date=$(extract_creation_date_from_meta_data_file "$meta_data_file")
+    if [ $extracted_creation_date ] ; then
+        apply_extracted_date_to_photo_or_movie_file "$file_name" $extracted_creation_date "$command_file"
+    else
+        return 1
+    fi
+}
+
+export -f update_webp_file_modified_date_with_extracted_meta_data
+
 update_mp4_file_modified_date_with_extracted_meta_data() {
     file_name="$1"
     meta_data_file=$(get_photo_meta_data_file "$file_name")
@@ -166,4 +198,4 @@ update_mp4_file_modified_date_with_extracted_meta_data() {
 export -f update_mp4_file_modified_date_with_extracted_meta_data
 
 echo > "$command_file"
-find "$inputDir" -type f -iname '*.jpg' -exec sh -c 'update_jpeg_file_modified_date_with_extracted_meta_data "{}" "$command_file"' \;
+find "$inputDir" -type f -iname '*.jpg' -ok sh -c 'update_jpeg_file_modified_date_with_extracted_meta_data "{}" "$command_file"' \;
