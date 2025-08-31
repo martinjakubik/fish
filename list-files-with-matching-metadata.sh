@@ -168,8 +168,10 @@ update_jpeg_file_modified_date_with_extracted_meta_data() {
     if [ $extracted_creation_date ] ; then
         apply_extracted_date_to_photo_or_movie_file "$file_name" $extracted_creation_date "$command_file"
     else
+        if [[ $DEBUG = 1 ]] ; then echo ; fi
         return 1
     fi
+    if [[ $DEBUG = 1 ]] ; then echo ; fi
 }
 
 export -f update_jpeg_file_modified_date_with_extracted_meta_data
@@ -182,8 +184,10 @@ update_webp_file_modified_date_with_extracted_meta_data() {
     if [ $extracted_creation_date ] ; then
         apply_extracted_date_to_photo_or_movie_file "$file_name" $extracted_creation_date "$command_file"
     else
+        if [[ $DEBUG = 1 ]] ; then echo ; fi
         return 1
     fi
+    if [[ $DEBUG = 1 ]] ; then echo ; fi
 }
 
 export -f update_webp_file_modified_date_with_extracted_meta_data
@@ -198,4 +202,8 @@ update_mp4_file_modified_date_with_extracted_meta_data() {
 export -f update_mp4_file_modified_date_with_extracted_meta_data
 
 echo > "$command_file"
-find "$inputDir" -type f -iname '*.jpg' -ok sh -c 'update_jpeg_file_modified_date_with_extracted_meta_data "{}" "$command_file"' \;
+if [[ $DEBUG = 1 ]] ; then
+    find "$inputDir" -type f -iname '*.jpg' -ok sh -c 'update_jpeg_file_modified_date_with_extracted_meta_data "{}" "$command_file"' \;
+else
+    find "$inputDir" -type f -iname '*.jpg' -exec sh -c 'update_jpeg_file_modified_date_with_extracted_meta_data "{}" "$command_file"' \;
+fi
