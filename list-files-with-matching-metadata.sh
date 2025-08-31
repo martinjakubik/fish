@@ -131,8 +131,6 @@ apply_extracted_date_to_photo_or_movie_file() {
     echo >&2 command file $command_file
     if [[ $months_between > 12 ]] ; then
         echo applying file creation date to photo "$file_name" >> "$HOME/gphotoexifupdater.sh"
-    else
-        echo not applying file creation date to photo "$file_name" >> "$HOME/gphotoexifupdater.sh"
     fi
 }
 
