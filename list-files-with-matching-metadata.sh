@@ -95,7 +95,7 @@ export -f extract_creation_date_from_meta_data_file
 
 convert_epoch_date_to_exif_date() {
     epoch_date="$1"
-    exif_date=$(date -r "$epoch_date" "+%Y:%m:%d %H:%M:%S")
+    exif_date=$(date -r "$epoch_date" "+%Y:%m:%d-%H:%M:%S")
     echo $exif_date
 }
 
@@ -136,7 +136,7 @@ apply_extracted_date_to_photo_or_movie_file() {
     photo_create_date_as_epoch=$(convert_exif_date_to_epoch_date "$photo_create_date_as_exif")
     months_between=$(months_between_dates "$file_create_date_as_epoch" $photo_create_date_as_epoch)
     if [[ $months_between > 12 ]] ; then
-        echo exiftool "$file_name" >> "$HOME/gphotoexifupdater.sh"
+        echo jhead -ts\"$file_create_date_as_exif\" \"$file_name\" >> "$HOME/gphotoexifupdater.sh"
     fi
 }
 
