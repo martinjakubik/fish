@@ -1,24 +1,10 @@
 #!/bin/bash
 # sets up usage
-USAGE="usage: $0 -i --inputDir inputDir -c --commandFile -d --debug"
-
-if ! command -v jq >/dev/null 2>&1 ; then
-    echo "jq could not be found"
-    exit 1
-fi
-
-if ! command -v jhead >/dev/null 2>&1 ; then
-    echo "jhead could not be found"
-    exit 1
-fi
-
-if ! command -v exiftool >/dev/null 2>&1 ; then
-    echo "exiftool could not be found"
-    exit 1
-fi
+USAGE="usage: $0 -i --inputDir inputDir -c --commandFile --require-exiftool yes|no -d --debug"
 
 # set up defaults
 DEBUG=0
+REQUIRE_EXIFTOOL=0
 inputDir=$HOME/inputDir
 command_file=$HOME/gphotoexifupdater.sh
 
@@ -30,6 +16,7 @@ do
     (--inputDir) inputDir="$2"; shift;;
     (-c) inputDir="$2"; shift;;
     (--commandFile) command_file="$2"; shift;;
+    (--require-exiftool) requireExifTool="$2"; shift;;
     (-d) DEBUG=1;;
     (--debug) DEBUG=1;;
     (-*) echo >&2 ${USAGE}
@@ -37,6 +24,27 @@ do
   esac
   shift
 done
+
+if ! command -v jq >/dev/null 2>&1 ; then
+    echo "jq could not be found"
+    exit 1
+fi
+
+if ! command -v jhead >/dev/null 2>&1 ; then
+    echo "jhead could not be found"
+    exit 1
+fi
+
+if [[ $requireExifTool = 'yes' ]] ; then
+    REQUIRE_EXIFTOOL=1
+fi
+
+if [[ $REQUIRE_EXIFTOOL -eq 1 ]] ; then
+    if ! command -v exiftool >/dev/null 2>&1 ; then
+        echo "exiftool could not be found"
+        exit 1
+    fi
+fi
 
 echo you entered values
 echo   "From inputDir     : $inputDir"
