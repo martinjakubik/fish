@@ -23,3 +23,5 @@ St. Malo in Easter. St. Malo à Paques-PANO.jpg.supplementa.json
 ex002:
 St. Malo in Easter. St. Malo à Paques. - 1
 St. Malo in Easter. St. Malo à Paques. - 1.sup.json
+
+.supplemental-metadata.json
