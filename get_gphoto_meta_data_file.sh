@@ -24,7 +24,8 @@ if [[ $total_length -gt $MAX_LENGTH ]] ; then
         echo >&2 shortened suffix: \"$shortened_suffix\"
         echo "$photo_file".$shortened_suffix.json
     else
-        echo cannot create metadata filename for: \"$photo_file\"
+        echo >&2 cannot create metadata filename for: \"$photo_file\"
+        return 1
     fi
 else
     echo "$photo_file".$shortened_suffix.json
