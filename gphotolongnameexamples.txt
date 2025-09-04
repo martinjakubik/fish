@@ -13,3 +13,13 @@ xx-1234567890-floorplan-en.png.supplemental-me.json
 D04F4F5A-AA67-4BEB-9BB2-4C3887C79923.jpg
 D04F4F5A-AA67-4BEB-9BB2-4C3887C79923.jpg.suppl.json
 Brittany in December, day 1 beach - 10
+ex000:
+IMG_2033.edited.edited by.editor.edited2.edited3.edited4.edited5.JPG
+IMG_2033.edited.edited by.editor.edited2.edite.json
+ex001:
+St. Malo in Easter. St. Malo à Paques-PANO.jpg
+St. Malo in Easter. St. Malo à Paques-PANO.jpg.json
+St. Malo in Easter. St. Malo à Paques-PANO.jpg.supplementa.json
+ex002:
+St. Malo in Easter. St. Malo à Paques. - 1
+St. Malo in Easter. St. Malo à Paques. - 1.sup.json
