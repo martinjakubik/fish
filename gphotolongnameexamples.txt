@@ -19,7 +19,9 @@ IMG_2033.edited.edited by.editor.edited2.edite.json
 ex001:
 St. Malo in Easter. St. Malo à Paques-PANO.jpg
 St. Malo in Easter. St. Malo à Paques-PANO.jpg.json
-St. Malo in Easter. St. Malo à Paques-PANO.jpg.supplementa.json
+St. Malo in Easter. St. Malo à Paques-PANO.jpg.supplemen.json
+St. Malo in Easter. St. Malo à Paques-PANO.jpg.supplemental-metadata.json
+
 ex002:
 St. Malo in Easter. St. Malo à Paques. - 1
 St. Malo in Easter. St. Malo à Paques. - 1.sup.json

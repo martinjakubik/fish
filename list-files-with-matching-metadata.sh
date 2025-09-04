@@ -80,20 +80,32 @@ get_photo_meta_data_file() {
     photo_file="$1"
     photo_file_base_name=$(basename "$photo_file")
     length_of_file_name=${#photo_file_base_name}
-    suffix_for_json_files=supplemental-metadata.json
+    suffix_for_json_files=.supplemental-metadata
     shortened_suffix=$suffix_for_json_files
     length_of_suffix=${#shortened_suffix}
-    total_length=$(( length_of_file_name+length_of_suffix ))
+    total_length=$(( length_of_file_name+1+length_of_suffix+5 ))
     echo >&2 length of file name $length_of_file_name
     echo >&2 length of suffix $length_of_suffix
     echo >&2 total length $total_length max length $MAX_LENGTH
     if [[ $total_length -gt $MAX_LENGTH ]] ; then
-        excess_length=$(( total_length-MAX_LENGTH ))
-        shortened_suffix=${suffix_for_json_files:excess_length}
+        number_of_characters_to_keep=21
+        excess_length=$(( (total_length-MAX_LENGTH)-5 ))
         echo >&2 excess length $excess_length
-        echo >&2 shortened suffix: \"$shortened_suffix\"
+        if [[ excess_length -ge 0 ]] ; then
+            number_of_characters_to_keep=$(( 18-excess_length ))
+        fi
+        if [[ number_of_characters_to_keep -ge 0 ]] ; then
+            shortened_suffix=${suffix_for_json_files::number_of_characters_to_keep}
+            echo >&2 number of characters to keep $number_of_characters_to_keep
+            echo >&2 shortened suffix: \"$shortened_suffix\"
+            echo "$photo_file"$shortened_suffix.json
+        else
+            echo >&2 cannot create metadata filename for: \"$photo_file\"
+            return 1
+        fi
+    else
+        echo "$photo_file"$shortened_suffix.json
     fi
-    echo "$photo_file".$shortened_suffix
 
     # note: here is a regular expression to find long file names
     # ^[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/.{48}\.jpg
@@ -173,15 +185,16 @@ update_jpeg_file_modified_date_with_extracted_meta_data() {
     file_name="$1"
     command_file="$2"
     DEBUG=$3
-    meta_data_file=$(get_photo_meta_data_file "$file_name")
-    extracted_creation_date=$(extract_creation_date_from_meta_data_file "$meta_data_file")
-    if [ $extracted_creation_date ] ; then
-        apply_extracted_date_to_photo_or_movie_file "$file_name" $extracted_creation_date "$command_file"
-    else
+    if meta_data_file=$(get_photo_meta_data_file "$file_name") ; then
+        extracted_creation_date=$(extract_creation_date_from_meta_data_file "$meta_data_file")
+        if [ $extracted_creation_date ] ; then
+            apply_extracted_date_to_photo_or_movie_file "$file_name" $extracted_creation_date "$command_file"
+        else
+            if [[ $DEBUG = 1 ]] ; then echo ; fi
+            return 1
+        fi
         if [[ $DEBUG = 1 ]] ; then echo ; fi
-        return 1
     fi
-    if [[ $DEBUG = 1 ]] ; then echo ; fi
 }
 
 export -f update_jpeg_file_modified_date_with_extracted_meta_data
