@@ -12,7 +12,11 @@ xx-1234567890-floorplan-en.png.supplemental-me.json
 1a15ti1mobgi1tpsl37r5gahp34vttl8rl7f1l7im.jpg..json
 D04F4F5A-AA67-4BEB-9BB2-4C3887C79923.jpg
 D04F4F5A-AA67-4BEB-9BB2-4C3887C79923.jpg.suppl.json
+AE08E34E-4B8D-4506-8FD5-F9848055826F.jpg
+AE08E34E-4B8D-4506-8FD5-F9848055826F.jpg.suppl.json
 Brittany in December, day 1 beach - 10
+IMG_7046-EFFECTS.jpg
+IMG_7046-EFFECTS.jpg.supplemental-metadata.json
 ex000:
 IMG_2033.edited.edited by.editor.edited2.edited3.edited4.edited5.JPG
 IMG_2033.edited.edited by.editor.edited2.edite.json
@@ -25,5 +29,10 @@ St. Malo in Easter. St. Malo à Paques-PANO.jpg.supplemental-metadata.json
 ex002:
 St. Malo in Easter. St. Malo à Paques. - 1
 St. Malo in Easter. St. Malo à Paques. - 1.sup.json
+
+
+
+/Volumes/2021/GPhotosMerged/Trip to La Rochelle and Île-d_Aix/IMG_7046-EFFECTS-edited.jpg.supplemental-metadat.json: No such file or directory
+
 
 .supplemental-metadata.json

@@ -1,0 +1,98 @@
+run_count=0
+success_count=0
+fail_count=0
+
+test_case="7 character filename"
+echo case $test_case
+input="IMG1000.JPG"
+expected="IMG1000.JPG.supplemental-metadata.json"
+actual=$($HOME/code/gitwork/fish/get_gphoto_meta_data_file.sh "$input")
+run_count=$(( run_count+1 ))
+if [[ ! $actual = $expected ]] ; then
+    fail_count=$(( fail_count+1 ))
+    echo failed
+    echo "actual:   " "$actual"
+    echo "expected: " "$expected"
+    echo
+else
+    echo succeeded
+    success_count=$(( success_count+1 ))
+    echo
+fi
+
+
+test_case="36 character filename"
+echo case $test_case
+input="123456789_123456789_123456789_123456.jpg"
+expected="123456789_123456789_123456789_123456.jpg.suppl.json"
+actual=$($HOME/code/gitwork/fish/get_gphoto_meta_data_file.sh "$input")
+run_count=$(( run_count+1 ))
+if [[ ! $actual = $expected ]] ; then
+    fail_count=$(( fail_count+1 ))
+    echo failed
+    echo "actual:   " "$actual"
+    echo "expected: " "$expected"
+    echo
+else
+    echo succeeded
+    success_count=$(( success_count+1 ))
+    echo
+fi
+
+test_case="23 character filename"
+echo case $test_case
+input="123456789_123456789_123.JPG"
+expected="123456789_123456789_123.JPG.supplemental-metad.json"
+actual=$($HOME/code/gitwork/fish/get_gphoto_meta_data_file.sh "$input")
+run_count=$(( run_count+1 ))
+if [[ ! $actual = $expected ]] ; then
+    fail_count=$(( fail_count+1 ))
+    echo failed
+    echo "actual:   " "$actual"
+    echo "expected: " "$expected"
+    echo
+else
+    echo succeeded
+    success_count=$(( success_count+1 ))
+    echo
+fi
+
+test_case="16 character filename"
+echo case $test_case
+input="IMG_7046-EFFECTS.jpg"
+expected="IMG_7046-EFFECTS.jpg.supplemental-metadata.json"
+actual=$($HOME/code/gitwork/fish/get_gphoto_meta_data_file.sh "$input")
+run_count=$(( run_count+1 ))
+if [[ ! $actual = $expected ]] ; then
+    fail_count=$(( fail_count+1 ))
+    echo failed
+    echo "actual:   " "$actual"
+    echo "expected: " "$expected"
+    echo
+else
+    echo succeeded
+    success_count=$(( success_count+1 ))
+    echo
+fi
+
+test_case="43 character filename"
+echo case $test_case
+input="E3954AEC-626C-4DEC-B726-760D91C59D28_L0_001.jpg"
+expected="E3954AEC-626C-4DEC-B726-760D91C59D28_L0_001.su.json"
+actual=$($HOME/code/gitwork/fish/get_gphoto_meta_data_file.sh "$input")
+run_count=$(( run_count+1 ))
+if [[ ! $actual = $expected ]] ; then
+    fail_count=$(( fail_count+1 ))
+    echo failed
+    echo "actual:   " "$actual"
+    echo "expected: " "$expected"
+    echo
+else
+    echo succeeded
+    success_count=$(( success_count+1 ))
+    echo
+fi
+
+echo "number of tests:  " $run_count
+echo "succeeded:        " $success_count
+echo "failed:           " $fail_count

@@ -7,16 +7,18 @@ length_of_file_name=${#photo_file_base_name}
 suffix_for_json_files=.supplemental-metadata
 shortened_suffix=$suffix_for_json_files
 length_of_suffix=${#shortened_suffix}
-total_length=$(( length_of_file_name+1+length_of_suffix+5 ))
+json_extension=".json"
+length_of_json_extension=${#json_extension}
+total_length=$(( length_of_file_name+length_of_suffix+length_of_json_extension ))
 echo >&2 length of file name $length_of_file_name
 echo >&2 length of suffix $length_of_suffix
 echo >&2 total length $total_length max length $MAX_LENGTH
 if [[ $total_length -gt $MAX_LENGTH ]] ; then
-    number_of_characters_to_keep=21
-    excess_length=$(( (total_length-MAX_LENGTH)-5 ))
+    number_of_characters_to_keep=$(( ${#shortened_suffix}-1 ))
+    excess_length=$(( total_length-MAX_LENGTH ))
     echo >&2 excess length $excess_length
     if [[ excess_length -ge 0 ]] ; then
-        number_of_characters_to_keep=$(( 18-excess_length ))
+        number_of_characters_to_keep=$(( number_of_characters_to_keep-excess_length ))
     fi
     if [[ number_of_characters_to_keep -ge 0 ]] ; then
         shortened_suffix=${suffix_for_json_files::number_of_characters_to_keep}
