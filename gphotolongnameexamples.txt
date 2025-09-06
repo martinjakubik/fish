@@ -17,16 +17,10 @@ AE08E34E-4B8D-4506-8FD5-F9848055826F.jpg.suppl.json
 Brittany in December, day 1 beach - 10
 IMG_7046-EFFECTS.jpg
 IMG_7046-EFFECTS.jpg.supplemental-metadata.json
-ex000:
 IMG_2033.edited.edited by.editor.edited2.edited3.edited4.edited5.JPG
 IMG_2033.edited.edited by.editor.edited2.edite.json
-ex001:
 St. Malo in Easter. St. Malo à Paques-PANO.jpg
 St. Malo in Easter. St. Malo à Paques-PANO.jpg.json
-St. Malo in Easter. St. Malo à Paques-PANO.jpg.supplemen.json
-St. Malo in Easter. St. Malo à Paques-PANO.jpg.supplemental-metadata.json
-
-ex002:
 St. Malo in Easter. St. Malo à Paques. - 1
 St. Malo in Easter. St. Malo à Paques. - 1.sup.json
 
