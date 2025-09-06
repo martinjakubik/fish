@@ -75,7 +75,7 @@ else
     echo
 fi
 
-test_case="43 character filename"
+test_case="43 character filename - drop the.jpg extension"
 echo case $test_case
 input="E3954AEC-626C-4DEC-B726-760D91C59D28_L0_001.jpg"
 expected="E3954AEC-626C-4DEC-B726-760D91C59D28_L0_001.su.json"
