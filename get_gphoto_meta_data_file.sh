@@ -15,6 +15,8 @@ if [[ $DEBUG = 1 ]] ; then echo >&2 length of file name $length_of_file_name; fi
 if [[ $DEBUG = 1 ]] ; then echo >&2 length of suffix $length_of_suffix; fi
 if [[ $DEBUG = 1 ]] ; then echo >&2 total length $total_length max length $MAX_LENGTH; fi
 if [[ ${photo_file_base_name%[ ]-[ ]*[0-9].jpg} != ${photo_file_base_name} ]] ; then
+    # checks edge case if file has a space-hyphen-space and then digits (ex. IMG1000 - 11.jpg)
+    # and drops the .jpg from the metadat filename
     photo_file_without_jpg=${photo_file%.jpg}
     photo_file_base_name_without_jpg=${photo_file_base_name%.jpg}
     length_of_file_name_without_jpg=${#photo_file_base_name_without_jpg}
@@ -44,6 +46,7 @@ if [[ ${photo_file_base_name%[ ]-[ ]*[0-9].jpg} != ${photo_file_base_name} ]] ; 
         echo "$photo_file_without_jpg"$shortened_suffix.json
     fi
 elif [[ $total_length -gt $MAX_LENGTH ]] ; then
+    # checks case if metadata file exceeds max length and tries to shorten it
     number_of_characters_to_keep=$(( ${#shortened_suffix}-1 ))
     if [[ $DEBUG = 1 ]] ; then echo >&2 number of characters to keep: $number_of_characters_to_keep; fi
     excess_length=$(( total_length-MAX_LENGTH ))
@@ -53,6 +56,7 @@ elif [[ $total_length -gt $MAX_LENGTH ]] ; then
     fi
     if [[ $DEBUG = 1 ]] ; then echo >&2 number of characters to keep after shortening: $number_of_characters_to_keep; fi
     if [[  number_of_characters_to_keep -lt 0 ]] ; then
+        # checks if metadata file name is still too long after shortening
         photo_file_without_jpg=${photo_file%.jpg}
         photo_file_base_name_without_jpg=${photo_file_base_name%.jpg}
         length_of_file_name_without_jpg=${#photo_file_base_name_without_jpg}
@@ -61,6 +65,7 @@ elif [[ $total_length -gt $MAX_LENGTH ]] ; then
         if [[ $DEBUG = 1 ]] ; then echo >&2 length of suffix $length_of_suffix; fi
         if [[ $DEBUG = 1 ]] ; then echo >&2 total length $total_length_without_jpg max length $MAX_LENGTH; fi
         if [[ $total_length_without_jpg -gt $MAX_LENGTH ]] ; then
+            # checks if dropping the .jpg from the original file shortens the metadata file name enough
             number_of_characters_to_keep=$(( ${#shortened_suffix}-1 ))
             if [[ $DEBUG = 1 ]] ; then echo >&2 number of characters to keep: $number_of_characters_to_keep; fi
             excess_length_without_jpg=$(( total_length_without_jpg-MAX_LENGTH ))
@@ -82,11 +87,14 @@ elif [[ $total_length -gt $MAX_LENGTH ]] ; then
             echo "$photo_file_without_jpg"$shortened_suffix.json
         fi
     elif [[ number_of_characters_to_keep -ge 0 ]] ; then
+        # checks case when metadata suffix can be shortened by a few characters and
+        # if this allows it to fit
         shortened_suffix=${suffix_for_json_files::number_of_characters_to_keep}
         if [[ $DEBUG = 1 ]] ; then echo >&2 number of characters to keep $number_of_characters_to_keep; fi
         if [[ $DEBUG = 1 ]] ; then echo >&2 shortened suffix: \"$shortened_suffix\"; fi
         echo "$photo_file"$shortened_suffix.json
     fi
 else
+    # uses the entire suffix for the metadata file name
     echo "$photo_file"$shortened_suffix.json
 fi
