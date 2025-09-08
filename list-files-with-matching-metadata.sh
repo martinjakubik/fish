@@ -75,7 +75,7 @@ is_file_a_movie_or_photo() {
 
 export -f is_file_a_movie_or_photo
 
-get_photo_meta_data_file() {
+get_jpeg_photo_meta_data_file() {
     MAX_LENGTH=52
     photo_file="$1"
     photo_file_base_name=$(basename "$photo_file")
@@ -177,7 +177,7 @@ get_photo_meta_data_file() {
     # ^[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/.{48}\.jpg
 }
 
-export -f get_photo_meta_data_file
+export -f get_jpeg_photo_meta_data_file
 
 get_movie_meta_data_file() {
     movie_file="$1"
@@ -257,7 +257,7 @@ update_jpeg_file_modified_date_with_extracted_meta_data() {
     file_name="$1"
     command_file="$2"
     DEBUG=$3
-    if meta_data_file=$(get_photo_meta_data_file "$file_name" $DEBUG) ; then
+    if meta_data_file=$(get_jpeg_photo_meta_data_file "$file_name" $DEBUG) ; then
         extracted_creation_date=$(extract_creation_date_from_meta_data_file "$meta_data_file" $DEBUG)
         if [ $extracted_creation_date ] ; then
             apply_extracted_date_to_photo_or_movie_file "$file_name" $extracted_creation_date "$command_file" $DEBUG
@@ -275,7 +275,7 @@ update_webp_file_modified_date_with_extracted_meta_data() {
     file_name="$1"
     command_file="$2"
     DEBUG=$3
-    meta_data_file=$(get_photo_meta_data_file "$file_name")
+    meta_data_file=$(get_jpeg_photo_meta_data_file "$file_name")
     extracted_creation_date=$(extract_creation_date_from_meta_data_file "$meta_data_file")
     if [ $extracted_creation_date ] ; then
         apply_extracted_date_to_photo_or_movie_file "$file_name" $extracted_creation_date "$command_file" $DEBUG
@@ -290,7 +290,7 @@ export -f update_webp_file_modified_date_with_extracted_meta_data
 
 update_mp4_file_modified_date_with_extracted_meta_data() {
     file_name="$1"
-    meta_data_file=$(get_photo_meta_data_file "$file_name")
+    meta_data_file=$(get_jpeg_photo_meta_data_file "$file_name")
     echo meta data file: "${meta_data_file}"
     echo
 }
