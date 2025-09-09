@@ -91,7 +91,7 @@ get_jpeg_photo_meta_data_file() {
     if [[ $DEBUG = 1 ]] ; then echo >&2 total length $total_length max length $MAX_LENGTH; fi
     if [[ ${photo_file_base_name%[ ]-[ ]*[0-9].jpg} != ${photo_file_base_name} ]] ; then
         # checks edge case if file has a space-hyphen-space and then digits (ex. IMG1000 - 11.jpg)
-        # and drops the .jpg from the metadat filename
+        # and drops the .jpg from the metadata filename
         photo_file_without_jpg=${photo_file%.jpg}
         photo_file_base_name_without_jpg=${photo_file_base_name%.jpg}
         length_of_file_name_without_jpg=${#photo_file_base_name_without_jpg}
