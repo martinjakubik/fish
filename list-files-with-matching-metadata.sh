@@ -275,7 +275,7 @@ update_webp_file_modified_date_with_extracted_meta_data() {
     file_name="$1"
     command_file="$2"
     DEBUG=$3
-    meta_data_file=$(get_jpeg_photo_meta_data_file "$file_name")
+    meta_data_file=$(get_webp_photo_meta_data_file "$file_name")
     extracted_creation_date=$(extract_creation_date_from_meta_data_file "$meta_data_file")
     if [ $extracted_creation_date ] ; then
         apply_extracted_date_to_photo_or_movie_file "$file_name" $extracted_creation_date "$command_file" $DEBUG
