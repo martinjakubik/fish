@@ -239,14 +239,19 @@ apply_extracted_date_to_photo_or_movie_file() {
     json_metadata_create_date_as_epoch="$2"
     command_file="$3"
     DEBUG=$4
-    file_create_date_as_exif=$(convert_epoch_date_to_exif_date "$json_metadata_create_date_as_epoch" $DEBUG)
+    json_metadata_create_date_as_exif=$(convert_epoch_date_to_exif_date "$json_metadata_create_date_as_epoch" $DEBUG)
     photo_create_date_as_exif_tuple=$(jhead "$file_name" | grep Date/Time)
-    if [[ ! -z $photo_create_date_as_exif_tuple ]] ; then
+    if [[ -z $photo_create_date_as_exif_tuple ]] ; then
+        # handles case when there is no exif data in the file - just adds the json metadata
+        echo jhead -mkexif -ts\"$json_metadata_create_date_as_exif\" \"$file_name\" >> "$HOME/gphotoexifupdater.sh"
+    else
         photo_create_date_as_exif=${photo_create_date_as_exif_tuple#Date/Time*: }
         photo_create_date_as_epoch=$(convert_exif_date_to_epoch_date "$photo_create_date_as_exif" $DEBUG)
+        if [[ $DEBUG = 1 ]] ; then echo >&2 file create date from json metadata \"$json_metadata_create_date_as_epoch\"; fi
+        if [[ $DEBUG = 1 ]] ; then echo >&2 file create date from jhead \"$photo_create_date_as_epoch\"; fi
         months_between=$(months_between_dates "$json_metadata_create_date_as_epoch" $photo_create_date_as_epoch $DEBUG)
         if [[ $months_between > 12 ]] ; then
-            echo jhead -ts\"$file_create_date_as_exif\" \"$file_name\" >> "$HOME/gphotoexifupdater.sh"
+            echo jhead -ts\"$json_metadata_create_date_as_exif\" \"$file_name\" >> "$HOME/gphotoexifupdater.sh"
         fi
     fi
 }
