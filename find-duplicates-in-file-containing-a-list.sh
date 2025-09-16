@@ -1,8 +1,8 @@
 #!/bin/bash
 
-tempFile="$1"
-cat "$tempFile" | sed 's_.*/__' | sort |  uniq -d| 
-while read fileName
+elementList="$1"
+cat "$elementList" | sed 's_.*/__' | sort |  uniq -d| 
+while read elementName
 do
-    grep "/$fileName" $tempFile
+    grep "/$elementName" $elementList
 done
