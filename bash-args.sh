@@ -13,6 +13,7 @@ do
     (-i) infile="$2"; shift;;
     (--outfile) outfile="$2"; shift;;
     (-o) outfile="$2"; shift;;
+    (-o=* | --outfile=*) outfile="${1#*=}";;
     (-*) echo >&2 ${USAGE}
     exit 1;;
   esac
