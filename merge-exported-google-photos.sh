@@ -32,7 +32,7 @@
 # photos for profile/dscf0056.jpg.supplemental-metadata.json
 # photos for profile/IMG_4239.JPG.supplemental-metadata.json
 # photos for profile/IMG_4239.JPG
-# 
+#
 # sets up usage
 USAGE="usage: $0 -i --inputDir inputDir -o --destinationDir destinationDir --listDirectories yes|no --copyFiles yes|no -d --debug"
 
@@ -116,7 +116,11 @@ if [[ $copy_files -eq 1 ]] ; then
                 if [[ ! -d $destinationDir/"$numbered_directory_basename" ]] ; then
                     mkdir -p "$destinationDir/$numbered_directory_basename"
                 fi
-                cp "$numbered_source_directory"/* "$destinationDir"/"$numbered_directory_basename/"
+                if [[ $DEBUG = 1 ]] ; then
+                    echo copying "$numbered_source_directory"/* to "$destinationDir"/"$numbered_directory_basename/"
+                else
+                    cp "$numbered_source_directory"/* "$destinationDir"/"$numbered_directory_basename/"
+                fi
             fi
         done < list_of_numbered_directories
     fi
